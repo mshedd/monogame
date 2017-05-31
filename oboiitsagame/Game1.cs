@@ -11,11 +11,17 @@ namespace oboiitsagame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        Texture2D texture;
+        Rectangle bb;
+        Color color;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferHeight = 1000;
+            graphics.PreferredBackBufferWidth = 1000;
+            graphics.ApplyChanges();
+            this.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -39,7 +45,10 @@ namespace oboiitsagame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            color = Color.White;
+            bb = new Rectangle(50, 50, 50, 50);
+            texture = new Texture2D(GraphicsDevice, 1, 1);
+            texture.SetData(new Color[] { Color.White });
             // TODO: use this.Content to load your game content here
         }
 
@@ -61,7 +70,11 @@ namespace oboiitsagame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            bb.X++;
+            if (bb.X > 600)
+            {
+                bb.X = -51;
+            }
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -77,7 +90,10 @@ namespace oboiitsagame
 
             // TODO: Add your drawing code here
 
+            spriteBatch.Begin();
             base.Draw(gameTime);
+            spriteBatch.Draw(texture, bb, color);
+            spriteBatch.End();
         }
     }
 }
